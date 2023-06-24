@@ -19,6 +19,12 @@ const PRIVATE_KEY =
     "0x11ee3108a03081fe260ecdc106554d09d9d1209bcafd46942b10e02943effc4a"
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || ""
 
+// uncomment this line if you are getting a TypeError: ConnectTimeoutError: Connect Timeout Error
+const { ProxyAgent, setGlobalDispatcher } = require("undici")
+// 使用自己的vpn端口
+const proxyAgent = new ProxyAgent("http://127.0.0.1:7890")
+setGlobalDispatcher(proxyAgent)
+
 module.exports = {
     defaultNetwork: "hardhat",
     networks: {
@@ -45,14 +51,14 @@ module.exports = {
     },
     etherscan: {
         apiKey: ETHERSCAN_API_KEY,
-        // customChains: [], // uncomment this line if you are getting a TypeError: customChains is not iterable
+        customChains: [], // uncomment this line if you are getting a TypeError: customChains is not iterable
     },
     gasReporter: {
         enabled: true,
         currency: "USD",
         outputFile: "gas-report.txt",
         noColors: true,
-        // coinmarketcap: COINMARKETCAP_API_KEY,
+        coinmarketcap: COINMARKETCAP_API_KEY,
     },
     namedAccounts: {
         deployer: {
